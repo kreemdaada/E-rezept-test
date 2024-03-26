@@ -11,8 +11,8 @@ const Navigation = () => {
           <Nav.Link href="/">Home</Nav.Link>
           <Nav.Link href="/about">About</Nav.Link>
           <NavDropdown title="Account" id="basic-nav-dropdown">
-            <NavDropdown.Item href="/dashbord">Login</NavDropdown.Item>
-            <NavDropdown.Item href="/dashbord">Register</NavDropdown.Item>
+            <NavDropdown.Item href="/backend/doctor/login">Login</NavDropdown.Item>
+            <NavDropdown.Item href="/backend/doctor/register">Register</NavDropdown.Item>
           </NavDropdown>
         </Nav>
       </Navbar.Collapse>

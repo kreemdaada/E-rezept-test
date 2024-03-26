@@ -7,7 +7,8 @@ import DoctorRegister from './components/auth/DoctorRegiester';
 import PharmacyRegister from './components/auth/PharmacyRegister';
 import DoctorLogin from './components/auth/DoctorLogin';
 import PharmacyLogin from './components/auth/PharmacyLogin';
-import Dashboard from './components/dashbord/Dashbord';
+import Dashbord from './components/dashbord/Dashbord';
+
 const App = () => {
   return (
     <Router>
@@ -21,7 +22,7 @@ const App = () => {
           <Route path="/backend/pharmacy/register" element={<PharmacyRegister />} />
           <Route path="/backend/doctor/login" element={<DoctorLogin />} />
           <Route path="/backend/pharmacy/login" element={<PharmacyLogin />} />
-          <Route path="/dashbord" component={<Dashboard/>} />
+          <Route path="/dashbord" component={<Dashbord/>}  />
 
         </Routes>
       </div>

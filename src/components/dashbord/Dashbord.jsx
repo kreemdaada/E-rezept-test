@@ -1,25 +1,37 @@
 import React, { useState, useEffect } from 'react';
-import { Route } from 'react-router-dom';
-import DoctorDashboard from './DoctorDashbord';
+import { Route, Routes, useNavigate } from 'react-router-dom';
+import DoctorDashbord from './DoctorDashbord';
 import PharmacyDashbord from './PharmacyDashbord';
 
-const Dashboard = () => {
-  // Definiere den initialen Benutzertyp als 'unknown' (unbekannt)
+const Dashbord = () => {
   const [userType, setUserType] = useState('unknown');
+  const navigate = useNavigate();
 
-  // Simuliere den Benutzerlogin und aktualisiere den Benutzertyp entsprechend
   useEffect(() => {
-   
-    // Für dieses Beispiel setzen wir den Benutzertyp einfach statisch auf 'doctor'
-    setUserType('doctor');
-  }, []); // Diese Effektfunktion wird nur einmal beim ersten Rendern ausgeführt
+    const simulateLogin = () => {
+      setTimeout(() => {
+        setUserType('doctor');
+      }, 2000);
+    };
+
+    simulateLogin();
+  }, []);
+
+  // eslint-disable-next-line no-unused-vars
+  const ToLoginPage = () => {
+    navigate('/backend/doctor/login');
+  };
+
+  if (userType !== 'doctor' && userType !== 'pharmacy') {
+    throw new Error('Unbekannter Benutzertyp');
+  }
 
   return (
-    <Route path="/dashbord">
-      {/* Basierend auf dem Benutzertyp wird die entsprechende Dashboard-Komponente gerendert */}
-      {userType === 'doctor' ? <DoctorDashboard /> : userType === 'pharmacy' ? <PharmacyDashbord /> : <div>Unbekannter Benutzertyp</div>}
-    </Route>
+    <Routes>
+      <Route path="/dashbord/doctor" element={userType === 'doctor' ? <DoctorDashbord /> : null} />
+      <Route path="/dashbord/pharmacy" element={userType === 'pharmacy' ? <PharmacyDashbord /> : null} />
+    </Routes>
   );
 };
 
-export default Dashboard;
+export default Dashbord;
