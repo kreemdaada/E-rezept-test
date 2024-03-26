@@ -4,7 +4,6 @@ import axios from 'axios';
 const DoctorRegister = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
   const [name, setName] = useState('');
   const [address, setAddress] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
@@ -13,8 +12,8 @@ const DoctorRegister = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (password !== confirmPassword) {
-      alert('Passwörter stimmen nicht überein!');
+    if (password === setPassword) {
+      alert('');
       return;
     }
 
@@ -54,8 +53,6 @@ const DoctorRegister = () => {
       <input type="tel" id="phonenumber" name="phonenumber" className="form-control mb-2" required value={phoneNumber} onChange={(e) => setPhoneNumber(e.target.value)} />
       <label htmlFor="password" className="sr-only">Passwort</label>
       <input type="password" id="password" name="password" className="form-control mb-2" required value={password} onChange={(e) => setPassword(e.target.value)} />
-      <label htmlFor="confirmpassword" className="sr-only">Passwort bestätigen</label>
-      <input type="password" id="confirmpassword" name="confirmpassword" className="form-control mb-2" required value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} />
       <div className="d-flex justify-content-center">
         <button className="btn btn-lg btn-primary btn-block m" type="submit">Registrieren</button>
       </div>

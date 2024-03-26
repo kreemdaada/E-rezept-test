@@ -20,7 +20,7 @@ const DoctorLogin = () => {
       const token = response.data.token;
       localStorage.setItem('jwtToken', token);
       axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-      window.location.href = '/dashboard';
+      window.location.href = '/dashbord';
     } catch (error) {
       console.error(error);
       alert('Anmeldung falschgeschlagen. Bitte überprüfen Sie Ihre Eingaben und versuchen Sie es erneut.');

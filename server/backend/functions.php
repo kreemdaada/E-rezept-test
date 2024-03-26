@@ -1,5 +1,6 @@
 <?php
-require_once '../con/database.php';
+
+require_once dirname(__DIR__,2) . '/con/database.php';
 
 // Funktion zur Überprüfung der E-Mail-Adresse
 function isEmailUnique($pdo, $email, $table) {
@@ -10,7 +11,7 @@ function isEmailUnique($pdo, $email, $table) {
 // Funktion zum Abrufen von Benutzerdaten anhand der ID
 function getUserDataById($userId) {
     global $pdo;
-    $stmt = $pdo->prepare("SELECT * FROM doctors WHERE id = ?");
+    $stmt = $pdo->prepare("SELECT * FROM doctors WHERE `id` = ?");
     $stmt->execute([$userId]);
     return $stmt->fetch(PDO::FETCH_ASSOC);
 }

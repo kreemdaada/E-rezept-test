@@ -8,4 +8,7 @@ $doctors = $stmt->fetchAll(PDO::FETCH_ASSOC);
 // JSON-Ausgabe der abgerufenen Daten
 header('Content-Type: application/json');
 echo json_encode($doctors);
+
+
+
 ?>

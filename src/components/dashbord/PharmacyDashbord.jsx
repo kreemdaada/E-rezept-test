@@ -1,6 +1,6 @@
 import React from 'react';
 
-const DoctorDashboard = () => {
+const PharmacyDashbord = () => {
   return (
     <div>
       <h1>
@@ -11,4 +11,4 @@ const DoctorDashboard = () => {
   );
 };
 
-export default DoctorDashboard;
+export default PharmacyDashbord;
