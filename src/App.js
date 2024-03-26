@@ -1,25 +1,30 @@
-import logo from './logo.svg';
-import './App.css';
-
-function App() {
+import React from 'react';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import Home from './components/Home';
+import About from './components/about/about';
+import Navigation from './components/Navbar'; 
+import DoctorRegister from './components/apiJwt/DoctorRegiester';
+import PharmacyRegister from './components/apiJwt/PharmacyRegister';
+import DoctorLogin from './components/apiJwt/DoctorLogin';
+import PharmacyLogin from './components/apiJwt/PharmacyLogin';
+import Dashboard from './components/dashbord/Dashbord';
+const App = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      <div>
+        <Navigation /> {/* Fügen Sie die Navigation-Komponente hier ein */}
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/backend/doctor/register" element={<DoctorRegister />} />
+          <Route path="/backend/pharmacy/register" element={<PharmacyRegister />} />
+          <Route path="/backend/doctor/login" element={<DoctorLogin />} />
+          <Route path="/backend/pharmacy/login" element={<PharmacyLogin />} />
+          <Route path="/dashboard" component={<Dashboard/>} />
+        </Routes>
+      </div>
+    </Router>
   );
-}
+};
 
 export default App;
