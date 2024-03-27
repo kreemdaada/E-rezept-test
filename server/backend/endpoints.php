@@ -1,18 +1,100 @@
 <?php
 require '../con/database.php';
 
+
+
 // Registrierung oder Anmeldung
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $data = json_decode(file_get_contents('php://input'), true);
 
     if ($_SERVER['REQUEST_URI'] === '/backend/doctor/register') {
-        register($pdo, $data);
+        registerDoctor($pdo, $data, 'doctors'); // Anpassung des Tabellennamens
     } elseif ($_SERVER['REQUEST_URI'] === '/backend/pharmacy/register') {
-        register($pdo, $data);
+        registerPharmacy($pdo, $data, 'pharmacies'); // Anpassung des Tabellennamens
     } elseif ($_SERVER['REQUEST_URI'] === '/backend/doctor/login') {
-        login($pdo, $data);
+        loginDoctor($pdo, $data, 'doctors'); // Anpassung des Tabellennamens
     } elseif ($_SERVER['REQUEST_URI'] === '/backend/pharmacy/login') {
-        login($pdo, $data);
+        loginPharmacy($pdo, $data, 'pharmacies'); // Anpassung des Tabellennamens
+    }
+}
+#-------------------------------------
+function registerDoctor($pdo, $data,$tablename) {
+    // Daten aus dem POST-Datenarray abrufen
+    $name = $data['name'];
+    $email = $data['email'];
+    $password = password_hash($data['password'], PASSWORD_DEFAULT);
+    $address = $data['address'];
+    $phoneNumber = $data['phoneNumber'];
+    $arztId = $data['arztId'];
+
+    // SQL-Anweisung für die Einfügung eines neuen Arztes vorbereiten
+    $stmt = $pdo->prepare("INSERT INTO users (name, email, password, address, phoneNumber, arztId) VALUES (?, ?, ?, ?, ?, ?)");
+
+    // SQL-Anweisung mit den Daten ausführen
+    $stmt->execute([$name, $email, $password, $address, $phoneNumber, $arztId]);
+
+    // Erfolgsmeldung zurückgeben
+    echo json_encode(array("message" => "Arzt erfolgreich registriert."));
+}
+#-------------------------------------------------------
+function registerPharmacy($pdo, $data,$tablename) {
+    // Daten aus dem POST-Datenarray abrufen
+    $name = $data['name'];
+    $email = $data['email'];
+    $password = password_hash($data['password'], PASSWORD_DEFAULT);
+    $address = $data['address'];
+    $phoneNumber = $data['phoneNumber'];
+    $apothekeId = $data['apothekeId'];
+
+    // SQL-Anweisung für die Einfügung einer neuen Apotheke vorbereiten
+    $stmt = $pdo->prepare("INSERT INTO users (name, email, password, address, phoneNumber, apothekeId) VALUES (?, ?, ?, ?, ?, ?)");
+
+    // SQL-Anweisung mit den Daten ausführen
+    $stmt->execute([$name, $email, $password, $address, $phoneNumber, $apothekeId]);
+
+    // Erfolgsmeldung zurückgeben
+    echo json_encode(array("message" => "Apotheke erfolgreich registriert."));
+}
+#-----------------------------------------
+function loginDoctor($pdo, $data,$tablename) {
+    // Email und Passwort aus dem POST-Datenarray abrufen
+    $email = $data['email'];
+    $password = $data['password'];
+
+    // SQL-Anweisung für die Abfrage des Arztes anhand der Email vorbereiten
+    $stmt = $pdo->prepare("SELECT * FROM users WHERE email = ?");
+    $stmt->execute([$email]);
+    $doctor = $stmt->fetch();
+
+    // Überprüfen, ob ein Arzt mit der angegebenen Email gefunden wurde und das Passwort korrekt ist
+    if ($doctor && password_verify($password, $doctor['password'])) {
+        // Erfolgsmeldung zurückgeben oder Daten des eingeloggten Arztes weiterverarbeiten
+        echo json_encode(array("message" => "Arzt erfolgreich eingeloggt."));
+    } else {
+        // Fehlermeldung zurückgeben, falls keine Übereinstimmung gefunden wurde
+        http_response_code(401);
+        echo json_encode(array("message" => "Ungültige Anmeldeinformationen."));
+    }
+}
+#----------------------------------------------------------
+function loginPharmacy($pdo, $data,$tablename) {
+    // Email und Passwort aus dem POST-Datenarray abrufen
+    $email = $data['email'];
+    $password = $data['password'];
+
+    // SQL-Anweisung für die Abfrage der Apotheke anhand der Email vorbereiten
+    $stmt = $pdo->prepare("SELECT * FROM users WHERE email = ?");
+    $stmt->execute([$email]);
+    $pharmacy = $stmt->fetch();
+
+    // Überprüfen, ob eine Apotheke mit der angegebenen Email gefunden wurde und das Passwort korrekt ist
+    if ($pharmacy && password_verify($password, $pharmacy['password'])) {
+        // Erfolgsmeldung zurückgeben oder Daten der eingeloggten Apotheke weiterverarbeiten
+        echo json_encode(array("message" => "Apotheke erfolgreich eingeloggt."));
+    } else {
+        // Fehlermeldung zurückgeben, falls keine Übereinstimmung gefunden wurde
+        http_response_code(401);
+        echo json_encode(array("message" => "Ungültige Anmeldeinformationen."));
     }
 }
 ?>
