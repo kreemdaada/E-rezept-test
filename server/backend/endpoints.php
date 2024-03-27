@@ -1,62 +1,70 @@
 <?php
 require '../con/database.php';
 
-
-
 // Registrierung oder Anmeldung
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $data = json_decode(file_get_contents('php://input'), true);
 
     if ($_SERVER['REQUEST_URI'] === '/backend/doctor/register') {
-        registerDoctor($pdo, $data, 'doctors'); // Anpassung des Tabellennamens
+        registerDoctor($pdo, $data, 'users'); // Anpassung des Tabellennamens
     } elseif ($_SERVER['REQUEST_URI'] === '/backend/pharmacy/register') {
-        registerPharmacy($pdo, $data, 'pharmacies'); // Anpassung des Tabellennamens
+        registerPharmacy($pdo, $data, 'users'); // Anpassung des Tabellennamens
     } elseif ($_SERVER['REQUEST_URI'] === '/backend/doctor/login') {
-        loginDoctor($pdo, $data, 'doctors'); // Anpassung des Tabellennamens
+        loginDoctor($pdo, $data, 'users'); // Anpassung des Tabellennamens
     } elseif ($_SERVER['REQUEST_URI'] === '/backend/pharmacy/login') {
-        loginPharmacy($pdo, $data, 'pharmacies'); // Anpassung des Tabellennamens
+        loginPharmacy($pdo, $data, 'users'); // Anpassung des Tabellennamens
     }
 }
+
 #-------------------------------------
-function registerDoctor($pdo, $data,$tablename) {
+function registerDoctor($pdo, $data, $tablename) {
     // Daten aus dem POST-Datenarray abrufen
     $name = $data['name'];
     $email = $data['email'];
     $password = password_hash($data['password'], PASSWORD_DEFAULT);
     $address = $data['address'];
     $phoneNumber = $data['phoneNumber'];
-    $arztId = $data['arztId'];
+    $userId = $data['userId']; // Die Spalte "userId" wird aus dem Datenarray abgerufen
 
     // SQL-Anweisung für die Einfügung eines neuen Arztes vorbereiten
-    $stmt = $pdo->prepare("INSERT INTO users (name, email, password, address, phoneNumber, arztId) VALUES (?, ?, ?, ?, ?, ?)");
+    $stmt = $pdo->prepare("INSERT INTO users (name, email, password, address, phoneNumber, userId) VALUES (:name, :email, :password, :address,:phneNumber, :usserId)");
 
     // SQL-Anweisung mit den Daten ausführen
-    $stmt->execute([$name, $email, $password, $address, $phoneNumber, $arztId]);
+    $stmt->execute([
+        ':name' => $name,
+        ':email' => $email,
+        ':password' => $password,
+        ':address' => $address,
+        ':phoneNumber' => $phoneNumber,
+        ':userId' => $userId
+    ]);
 
     // Erfolgsmeldung zurückgeben
     echo json_encode(array("message" => "Arzt erfolgreich registriert."));
 }
+
 #-------------------------------------------------------
-function registerPharmacy($pdo, $data,$tablename) {
+function registerPharmacy($pdo, $data, $tablename) {
     // Daten aus dem POST-Datenarray abrufen
     $name = $data['name'];
     $email = $data['email'];
     $password = password_hash($data['password'], PASSWORD_DEFAULT);
     $address = $data['address'];
     $phoneNumber = $data['phoneNumber'];
-    $apothekeId = $data['apothekeId'];
+    $userId = $data['userId']; // Die Spalte "userId" wird aus dem Datenarray abgerufen
 
     // SQL-Anweisung für die Einfügung einer neuen Apotheke vorbereiten
-    $stmt = $pdo->prepare("INSERT INTO users (name, email, password, address, phoneNumber, apothekeId) VALUES (?, ?, ?, ?, ?, ?)");
+    $stmt = $pdo->prepare("INSERT INTO users (name, email, password, address, phoneNumber, userId) VALUES (?, ?, ?, ?, ?, ?)");
 
     // SQL-Anweisung mit den Daten ausführen
-    $stmt->execute([$name, $email, $password, $address, $phoneNumber, $apothekeId]);
+    $stmt->execute([$name, $email, $password, $address, $phoneNumber, $userId]);
 
     // Erfolgsmeldung zurückgeben
     echo json_encode(array("message" => "Apotheke erfolgreich registriert."));
 }
+
 #-----------------------------------------
-function loginDoctor($pdo, $data,$tablename) {
+function loginDoctor($pdo, $data, $tablename) {
     // Email und Passwort aus dem POST-Datenarray abrufen
     $email = $data['email'];
     $password = $data['password'];
@@ -76,8 +84,9 @@ function loginDoctor($pdo, $data,$tablename) {
         echo json_encode(array("message" => "Ungültige Anmeldeinformationen."));
     }
 }
+
 #----------------------------------------------------------
-function loginPharmacy($pdo, $data,$tablename) {
+function loginPharmacy($pdo, $data, $tablename) {
     // Email und Passwort aus dem POST-Datenarray abrufen
     $email = $data['email'];
     $password = $data['password'];

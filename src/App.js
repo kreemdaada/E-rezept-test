@@ -7,14 +7,16 @@ import DoctorRegister from './components/auth/DoctorRegiester';
 import PharmacyRegister from './components/auth/PharmacyRegister';
 import DoctorLogin from './components/auth/DoctorLogin';
 import PharmacyLogin from './components/auth/PharmacyLogin';
-import Dashboard from './components/dashboard/Dashboard';
+import DoctorDashboard from './components/doctordashboard/DoctorDashboard'; 
+import VersicherungPatientenForm from './components/versicherung_patienten/VersicherungPatientenForm';
+import RezeptAnlegen from './components/rezeptanlegen/RezeptAnlegen';
+import QRCodeGenerator from './components/QRCodePage';
 
 const App = () => {
   return (
     <Router>
       <div>
-        
-        <Navigation /> {/* Fügen Sie die Navigation-Komponente hier ein */}
+        <Navigation />
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/about" element={<About />} />
@@ -22,8 +24,12 @@ const App = () => {
           <Route path="/backend/pharmacy/register" element={<PharmacyRegister />} />
           <Route path="/backend/doctor/login" element={<DoctorLogin />} />
           <Route path="/backend/pharmacy/login" element={<PharmacyLogin />} />
-          <Route path="/dashboard" component={<Dashboard/>}  />
-
+          {/* Füge die Route für das DoctorDashboard hinzu */}
+          <Route path="/dashboard" element={<DoctorDashboard />} />
+          <Route path="/versicherung_patienten" element={<VersicherungPatientenForm />} />
+          <Route path="/rezept_anlegen" element={<RezeptAnlegen />} />
+          {/* Übergebe die tatsächlichen Komponenten an QRCodePage */}
+          <Route path="/qrcode" element={<QRCodeGenerator />} />
         </Routes>
       </div>
     </Router>
